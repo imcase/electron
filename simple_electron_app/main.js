@@ -10,7 +10,7 @@ app.whenReady().then(() => {
     webPreferences: { nodeIntegration: true },
   });
 
-  mainWindow.loadURL("https://electronjs.org"); // Replace with your own HTML or website
+  mainWindow.loadURL("https://app.appblocks.io"); // Replace with your own HTML or website
 
   // Create custom menu
   const template = [
@@ -94,6 +94,28 @@ app.whenReady().then(() => {
           accelerator: "F11", // Fullscreen toggle
           click: () => {
             mainWindow.setFullScreen(!mainWindow.isFullScreen());
+          },
+        },
+        {
+          type: "separator", // Separator before Maximize/Minimize/Normal
+        },
+        {
+          label: "Maximize",
+          accelerator: "CmdOrCtrl+Shift+M", // Maximize with shortcut
+          click: () => mainWindow.maximize(), // Maximize the window
+        },
+        {
+          label: "Minimize",
+          accelerator: "CmdOrCtrl+Shift+N", // Minimize with shortcut
+          click: () => mainWindow.minimize(), // Minimize the window
+        },
+        {
+          label: "Normal Mode", // Restore the window to normal size
+          accelerator: "CmdOrCtrl+Shift+R", // Normal mode shortcut
+          click: () => {
+            if (mainWindow.isMaximized()) {
+              mainWindow.restore(); // Restore window to normal size
+            }
           },
         },
       ]
