@@ -21,8 +21,8 @@ app.whenReady().then(() => {
           label: "Exit",
           accelerator: "CmdOrCtrl+X", // Exit app with Ctrl+X
           click: () => app.quit(), // Quit the app
-        }
-      ]
+        },
+      ],
     },
     {
       label: "Help",
@@ -45,14 +45,15 @@ app.whenReady().then(() => {
         {
           label: "Quit",
           role: "quit",
-        }
-      ]
-    }
+        },
+      ],
+    },
   ];
 
   const menu = Menu.buildFromTemplate(template);
   Menu.setApplicationMenu(menu);
 
+  // Start checking for updates
   autoUpdater.checkForUpdatesAndNotify();
 });
 
@@ -61,8 +62,8 @@ function showAbout() {
   dialog.showMessageBox({
     type: "info",
     title: "About",
-    message: "Your App Description Here.",
-    buttons: ["OK"]
+    message: `Simple Electron App\nVersion: ${app.getVersion()}`,
+    buttons: ["OK"],
   });
 }
 
@@ -71,12 +72,38 @@ function checkForUpdates() {
   autoUpdater.checkForUpdatesAndNotify();
 }
 
-autoUpdater.on("update-downloaded", () => {
+autoUpdater.on("update-available", () => {
   dialog.showMessageBox({
     type: "info",
     title: "Update Available",
-    message: "A new update is ready. The app will restart to update.",
-  }).then(() => {
-    autoUpdater.quitAndInstall();
+    message: "A new update is available. Downloading now...",
+  });
+});
+
+autoUpdater.on("update-not-available", () => {
+  dialog.showMessageBox({
+    type: "info",
+    title: "No Updates",
+    message: "You are using the latest version.",
+  });
+});
+
+autoUpdater.on("update-downloaded", () => {
+  dialog
+    .showMessageBox({
+      type: "info",
+      title: "Update Ready",
+      message: "A new update is ready. The app will restart to update.",
+    })
+    .then(() => {
+      autoUpdater.quitAndInstall();
+    });
+});
+
+autoUpdater.on("error", (err) => {
+  dialog.showMessageBox({
+    type: "error",
+    title: "Update Error",
+    message: `Error checking for updates: ${err.message}`,
   });
 });
