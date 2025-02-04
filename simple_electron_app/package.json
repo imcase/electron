@@ -1,6 +1,6 @@
 {
   "name": "simple_electron_app",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A test Electron app",
   "main": "main.js",
   "scripts": {
@@ -14,17 +14,17 @@
       "target": [
         "nsis"
       ],
-      "compression": "maximum"
+      "compression": "maximum",
+      "artifactName": "simple_electron_app-Setup-${version}.exe"
     },
     "publish": {
       "provider": "github",
-      "owner": "imcase", 
-      "repo": "electron",
-      "releaseType": "release",
-      "url": "https://github.com/imcase/electron/releases"
+      "owner": "imcase",
+      "repo": "electron"
     }
   },
   "dependencies": {
+    "electron-updater": "^6.3.9",
     "update-electron-app": "^2.0.2"
   },
   "devDependencies": {

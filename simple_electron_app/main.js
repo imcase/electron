@@ -13,6 +13,7 @@ app.whenReady().then(() => {
   mainWindow.loadURL("https://app.appblocks.io"); // Replace with your own HTML or website
 
   // Create custom menu
+  // Create custom menu
   const template = [
     {
       label: "File",
@@ -21,8 +22,104 @@ app.whenReady().then(() => {
           label: "Exit",
           accelerator: "CmdOrCtrl+X", // Exit app with Ctrl+X
           click: () => app.quit(), // Quit the app
+        }
+      ]
+    },
+    {
+      label: "Edit",
+      submenu: [
+        {
+          label: "Undo",
+          accelerator: "CmdOrCtrl+Z",
+          role: "undo", // Built-in undo action
         },
-      ],
+        {
+          label: "Redo",
+          accelerator: "CmdOrCtrl+Y",
+          role: "redo", // Built-in redo action
+        },
+        {
+          type: "separator", // Separator between actions
+        },
+        {
+          label: "Cut",
+          accelerator: "CmdOrCtrl+X",
+          role: "cut", // Built-in cut action
+        },
+        {
+          label: "Copy",
+          accelerator: "CmdOrCtrl+C",
+          role: "copy", // Built-in copy action
+        },
+        {
+          label: "Paste",
+          accelerator: "CmdOrCtrl+V",
+          role: "paste", // Built-in paste action
+        },
+        {
+          type: "separator", // Another separator
+        },
+        {
+          label: "Select All",
+          accelerator: "CmdOrCtrl+A",
+          role: "selectall", // Built-in Select All action
+        }
+      ]
+    },
+    {
+      label: "View",
+      submenu: [
+        {
+          label: "Actual Size",
+          accelerator: "CmdOrCtrl+0", // Reset zoom to default size
+          click: () => mainWindow.webContents.setZoomLevel(0),
+        },
+        {
+          label: "Zoom In",
+          accelerator: "Ctrl+Shift+=", // Zoom in
+          click: () => {
+            let currentZoom = mainWindow.webContents.getZoomLevel();
+            mainWindow.webContents.setZoomLevel(currentZoom + 1);
+          },
+        },
+        {
+          label: "Zoom Out",
+          accelerator: "Ctrl+-", // Zoom out
+          click: () => {
+            let currentZoom = mainWindow.webContents.getZoomLevel();
+            mainWindow.webContents.setZoomLevel(currentZoom - 1);
+          },
+        },
+        {
+          label: "Toggle Fullscreen",
+          accelerator: "F11", // Fullscreen toggle
+          click: () => {
+            mainWindow.setFullScreen(!mainWindow.isFullScreen());
+          },
+        },
+        {
+          type: "separator", // Separator before Maximize/Minimize/Normal
+        },
+        {
+          label: "Maximize",
+          accelerator: "CmdOrCtrl+Shift+M", // Maximize with shortcut
+          click: () => mainWindow.maximize(), // Maximize the window
+        },
+        {
+          label: "Minimize",
+          accelerator: "CmdOrCtrl+Shift+N", // Minimize with shortcut
+          click: () => mainWindow.minimize(), // Minimize the window
+        },
+        {
+          label: "Normal Mode", // Restore the window to normal size
+          accelerator: "CmdOrCtrl+Shift+R", // Normal mode shortcut
+          click: () => {
+            if (mainWindow.isMaximized()) {
+              mainWindow.restore(); // Restore window to normal size
+            }
+          },
+        },
+      ]
     },
     {
       label: "Help",
@@ -45,9 +142,9 @@ app.whenReady().then(() => {
         {
           label: "Quit",
           role: "quit",
-        },
-      ],
-    },
+        }
+      ]
+    }
   ];
 
   const menu = Menu.buildFromTemplate(template);
